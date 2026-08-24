@@ -1,6 +1,5 @@
 <p align="center"><h1>🗂️ Personal Prompts</h1></p>
 
-[![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 [![Code License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 - Author: Ralph Largo
@@ -15,9 +14,9 @@ To get started, simply copy a prompt from the section below and use it as input 
 
 ## Official prompt resources
 
-* [Anthropic Prompt Library](https://docs.anthropic.com/claude/prompt-library)
-* [Anthropic's Prompt Engineering Interactive Tutorial](https://github.com/anthropics/prompt-eng-interactive-tutorial)
-* [Claude Code documentation](https://docs.claude.com/en/docs/claude-code/overview)
+- [Anthropic Prompt Library](https://docs.anthropic.com/claude/prompt-library)
+- [Anthropic's Prompt Engineering Interactive Tutorial](https://github.com/anthropics/prompt-eng-interactive-tutorial)
+- [Claude Code documentation](https://docs.claude.com/en/docs/claude-code/overview)
 
 ## Contents
 

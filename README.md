@@ -23,6 +23,8 @@ To get started, simply copy a prompt from the section below and use it as input 
 - [Prompts For Github Project](#prompts-for-github-project)
   - [Analyze Codebase and Create Issues](#analyze-codebase-and-create-issues)
   - [Update Changelog and Set Up Releases](#update-changelog-and-set-up-releases)
+- [Prompts For Web Development](#prompts-for-web-development)
+  - [Improve Site SEO](#improve-site-seo)
 
 ## Prompts For Github Project
 
@@ -105,6 +107,69 @@ If a release workflow already exists, leave it alone and just tell me it's there
 
 Print the CHANGELOG.md diff, plus any new workflow file, and stop. Do not commit or push unless I ask.
 ````
+
+## Prompts For Web Development
+
+Prompts for working on a website or web app — the parts that face visitors and search engines.
+
+### Improve Site SEO
+
+A reusable prompt for auditing and fixing the SEO of any web project, whatever framework it is built with.
+
+Must be run from inside the project you want audited. Nothing else is required, though a running dev server and a deployed URL both make the verification step more useful.
+
+```
+Audit and improve the SEO of this project.
+
+1. Work out what the project is
+
+Before changing anything, figure out the framework and the rendering model. Check package.json, the config files, and the routing directory layout to tell apart Next.js App Router, Next.js Pages Router, TanStack Start, Astro, Remix or React Router, SvelteKit, Nuxt, a plain Vite SPA, a static site generator, or hand-written HTML.
+
+Everything below is the same checklist no matter which one it is — only the API that expresses it changes. Use whatever that framework already provides rather than hand-rolling tags: the metadata export or generateMetadata, the head or meta route API, a Head component, or the template's own head block.
+
+If the site is client-rendered with no prerendering or server rendering, say so before anything else. That is the largest SEO constraint the project has, and it outranks every smaller fix in this list.
+
+2. Read the rules already in the repo
+
+Check CLAUDE.md, AGENTS.md, and CONTRIBUTING.md, and look at how metadata, i18n, and analytics are already wired up. Follow the conventions that exist. Do not introduce a second way of doing something the project already does one way.
+
+3. Audit first — report before you edit
+
+Go route by route and check:
+
+Titles and descriptions — every route has a unique, human title under about 60 characters and a description around 150 characters. No duplicated titles across routes, no untouched framework default like "Create Next App", no page missing one entirely. Dynamic routes generate theirs from the record, with a sensible fallback when the record is missing.
+Headings — one h1 per page, headings nested in order, and the h1 says the same thing as the title.
+Canonical URLs — every page declares one absolute canonical. Check for the usual duplicate-content traps: the site reachable at both apex and www or both http and https, trailing-slash and case variants of the same path, query parameters like sorting or tracking IDs that create endless URL variants, and paginated lists.
+Social cards — Open Graph and Twitter card tags with an absolute image URL, correct type, and a resolvable og:url. Verify the image file actually exists at the referenced path and is a sensible size.
+Structured data — JSON-LD appropriate to the content: Organization or WebSite on the home page, Article or BlogPosting on posts, Product, BreadcrumbList, FAQPage where they genuinely apply. Only describe what is really on the page.
+robots.txt and sitemap — both exist and are served at the root, the sitemap lists real canonical URLs with sensible lastmod values and no redirects, dead links, or noindexed pages, and robots.txt points at the sitemap's absolute URL. If the project can generate the sitemap from its routes, generate it rather than hard-coding a list that will rot.
+Indexing directives — no stray noindex or Disallow blocking pages that should rank, and no staging-only rules that leaked into production config. Preview and staging deployments should be noindexed; production should not be.
+Content rendering — the text that matters is in the HTML the crawler receives, not only painted in after hydration. Internal links are real anchors with href, not click handlers on divs, and their text describes the destination rather than saying "click here".
+Images — meaningful alt text, decorative images with empty alt, explicit width and height or an aspect ratio so layout does not shift, modern formats, lazy loading below the fold, and eager loading with high fetch priority for the largest image above the fold.
+Performance, as far as it affects ranking — the largest contentful paint element, render-blocking resources, fonts loaded without a swap strategy, oversized client bundles, and anything that shifts layout.
+Internationalization, only if the site is multilingual — hreflang tags that reciprocate, plus x-default.
+Metadata base — a single source of truth for the site URL, read from an environment variable where the framework supports it, so absolute URLs are correct in every environment.
+
+Report what you find as a prioritized list before touching anything: what is broken, what is missing, and what is merely nice to have. Say which items will move the needle and which are marginal, and do not pad the list to make it look thorough.
+
+4. Fix the mechanical things
+
+Then implement the fixes that are unambiguous — missing tags, wrong or absent canonicals, absent robots.txt or sitemap, missing alt text, incorrect heading levels, unresolvable social image paths, hard-coded URLs that should come from config.
+
+Centralize it. If several pages need the same shape of metadata, add one helper and use it everywhere instead of copying tags across files. Prefer the framework's own idiom over a third-party SEO package unless the project already depends on one.
+
+Do not invent copy. Where a title or description needs a human decision — a marketing page, a product name, a tagline — write a reasonable draft and flag it for me to review rather than presenting it as final. Never write keyword-stuffed text, never add structured data describing something that is not on the page, and never make a claim about the site that you have not verified in the code.
+
+5. Verify
+
+Build the project or run the dev server and check the rendered HTML of a few representative routes, including at least one dynamic one — view the source or fetch it, so you see what a crawler sees rather than what the DOM looks like after hydration. Confirm the tags are present, the canonical is absolute and correct, and the sitemap and robots.txt are actually served.
+
+If you cannot verify something — an og:image that only resolves on the deployed domain, a redirect that only exists in the CDN config — say so plainly instead of assuming it works.
+
+6. Report
+
+Show me the diff, list anything left needing a human decision, and note anything that has to be done outside the repo: search console verification, DNS or redirect rules for apex and www, and the fact that a site with no inbound links will not rank no matter how clean its tags are.
+```
 
 ## Contributing
 
